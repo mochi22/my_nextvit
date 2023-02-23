@@ -272,7 +272,7 @@ def main(args):
         model.eval()
         utils.cal_flops_params_with_fvcore(model, input_tensor)
 
-    #model.to(device)
+    model.to(device)
     model_ema = None
 
 
@@ -337,6 +337,7 @@ def main(args):
     
     if args.finetune:
         print("This is finetuning!!!!!!!")
+        print(optimizer)
         model.module.proj_head[0].out_features = 2
         model_without_ddp.proj_head[0].out_features = 2
         model = model.to(device)
