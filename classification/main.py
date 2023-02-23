@@ -265,7 +265,7 @@ def main(args):
     )
 
     if not args.distributed or args.rank == 0:
-        #print(model)
+        print(model)
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)
         model.eval()
         utils.cal_flops_params_with_fvcore(model, input_tensor)
@@ -335,7 +335,7 @@ def main(args):
     
     if args.finetune:
         print("This is finetuning!!!!!!!")
-        model.proj_head.out_features = 2
+        model.proj_head[0].out_features = 2
         print(model)
 
         update_param_names = ["proj_head.0.weight", "proj_head.0.bias"]
