@@ -265,7 +265,7 @@ def main(args):
     )
 
     if not args.distributed or args.rank == 0:
-        print(model)
+        #print(model)
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)
         model.eval()
         utils.cal_flops_params_with_fvcore(model, input_tensor)
@@ -334,7 +334,6 @@ def main(args):
                     loss_scaler.load_state_dict(checkpoint['scaler'])
     
     if args.finetune:
-        print(model)
         print("This is finetuning!!!!!!!")
         model.module.proj_head[0].out_features = 2
         print(model)
