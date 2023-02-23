@@ -337,7 +337,8 @@ def main(args):
         print("This is finetuning!!!!!!!")
         model.module.proj_head[0].out_features = 2
         print(model)
-
+        input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)
+        print("ex output:",model(input_tensor))
         update_param_names = ["proj_head.0.weight", "proj_head.0.bias"]
         #params_to_update = []
         for name, param in model.named_parameters():
