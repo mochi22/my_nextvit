@@ -337,9 +337,16 @@ def main(args):
     
     if args.finetune:
         print("This is finetuning!!!!!!!")
-        model.module.proj_head[0].out_features = 2
-        model_without_ddp.proj_head[0].out_features = 2
-        model = model.to(device)
+        num_classes=2
+        model.module.proj_head[0].out_features = num_classes
+        model_without_ddp.proj_head[0].out_features = num_classes
+
+        # 全結合層の重み行列のサイズを修正する
+        old_weights = model_without_ddp.proj_head.weight.data  # 旧重みを保存する
+        new_weights = torch.nn.Parameter(torch.zeros(num_classes, 1024))
+        new_weights.data[:old_weights.shape[0], :] = old_weights
+        model_without_ddp.proj_head.weight = new_weights  # 新しい重みをセットする
+
         print(model.module.proj_head)
         print(model_without_ddp.proj_head)
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)

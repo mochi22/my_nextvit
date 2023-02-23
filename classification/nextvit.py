@@ -276,7 +276,7 @@ class NTB(nn.Module):
 
 
 class NextViT(nn.Module):
-    def __init__(self, stem_chs, depths, path_dropout, attn_drop=0, drop=0, num_classes=1000,
+    def __init__(self, stem_chs, depths, path_dropout, attn_drop=0, drop=0, num_classes=2,
                  strides=[1, 2, 2, 2], sr_ratios=[8, 4, 2, 1], head_dim=32, mix_block_ratio=0.75,
                  use_checkpoint=False):
         super(NextViT, self).__init__()
