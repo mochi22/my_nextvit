@@ -345,14 +345,14 @@ def main(args):
         old_weights = model_without_ddp.proj_head[0].weight.data  # 旧重みを保存する
         print(old_weights)
         print(old_weights.size())
-        new_weights = torch.nn.Parameter(torch.zeros(num_classes, 1024).to(device))
+        #new_weights = torch.nn.Parameter(torch.zeros(num_classes, 1024).to(device))
+        new_weights = old_weights.unsqueeze(0).repeat(num_classes, 1)  # 2次元テンソルに変換してからrepeatする
         print(new_weights.size())
         model_without_ddp.proj_head[0].weight = new_weights  # 新しい重みをセットする
 
         print(model.module.proj_head)
         print(model_without_ddp.proj_head)
 
-        print(old_weights.repeat(num_classes, 1))
         summary(model,(3,224,224)) # summary(model,(channels,H,W))
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)
         print("ex output:",model(input_tensor).size())
