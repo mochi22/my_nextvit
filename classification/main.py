@@ -338,8 +338,8 @@ def main(args):
     if args.finetune:
         print("This is finetuning!!!!!!!")
         num_classes = 2
-        num_classes = num_classes.to(device)
         model.module.proj_head[0].out_features = num_classes
+        model.module.proj_head[0]=model.module.proj_head[0].to(device)
         model_without_ddp.proj_head[0].out_features = num_classes
 
         """# 全結合層の重み行列のサイズを修正する
