@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 import time
 import torch
-import torch.nn as nn
+
 import torch.backends.cudnn as cudnn
 import json
 
@@ -310,8 +310,8 @@ def main(args):
                     loss_scaler.load_state_dict(checkpoint['scaler'])
     
     if args.finetune:
-        model.proj_head = nn.Sequential(
-            nn.Linear(in_features=1024, out_features=2, bias=True)
+        model.proj_head = torch.nn.Sequential(
+            torch.nn.Linear(in_features=1024, out_features=2, bias=True)
         )
 
         update_param_names = ["proj_head.0.weight", "proj_head.0.bias"]
