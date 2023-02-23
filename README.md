@@ -1,3 +1,8 @@
+# This repository is copy from https://github.com/bytedance/Next-ViT
+
+
+
+
 # Next-ViT
 This repo is the official implementation of ["Next-ViT: Next Generation Vision Transformer for Efficient Deployment in Realistic Industrial Scenarios"](https://arxiv.org/abs/2207.05501). This algorithm is proposed by ByteDance, Intelligent Creation, AutoML Team (字节跳动-智能创作 AutoML团队).
 
