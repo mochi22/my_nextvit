@@ -337,7 +337,8 @@ def main(args):
     
     if args.finetune:
         print("This is finetuning!!!!!!!")
-        num_classes=2
+        num_classes = 2
+        num_classes = num_classes.to(device)
         model.module.proj_head[0].out_features = num_classes
         model_without_ddp.proj_head[0].out_features = num_classes
 
@@ -361,6 +362,8 @@ def main(args):
         #params_to_update = []
         for name, param in model.named_parameters():
             if name in update_param_names:
+                print("@@@@@@@@@@")
+                print(name)
                 param.requires_grad = True
             else:
                 param.requires_grad = False
