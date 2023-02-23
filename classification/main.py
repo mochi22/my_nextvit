@@ -341,7 +341,7 @@ def main(args):
         model.module.proj_head[0].out_features = num_classes
         model_without_ddp.proj_head[0].out_features = num_classes
 
-        # 全結合層の重み行列のサイズを修正する
+        """# 全結合層の重み行列のサイズを修正する
         old_weights = model_without_ddp.proj_head[0].weight.data  # 旧重みを保存する
         print(old_weights)
         print(old_weights.size())
@@ -351,7 +351,7 @@ def main(args):
         model_without_ddp.proj_head[0].weight = new_weights  # 新しい重みをセットする
 
         print(model.module.proj_head)
-        print(model_without_ddp.proj_head)
+        print(model_without_ddp.proj_head)"""
 
         summary(model,(3,224,224)) # summary(model,(channels,H,W))
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)
