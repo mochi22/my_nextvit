@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 import time
 import torch
-import torch.nn
+import torch.nn as nn
 import torch.backends.cudnn as cudnn
 import json
 
