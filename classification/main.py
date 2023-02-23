@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 import time
 import torch
-
+import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 import json
 
@@ -20,6 +20,27 @@ from losses import DistillationLoss
 from samplers import RASampler
 import utils
 import nextvit
+
+"""class SoftTargetCrossEntropy(nn.Module):
+
+    def __init__(self):
+        super(SoftTargetCrossEntropy, self).__init__()
+
+    def forward(self, x: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        loss = torch.sum(-target * F.log_softmax(x, dim=-1), dim=-1)
+        return loss.mean()"""
+
+"""class SoftCrossEntropyLoss():
+   def __init__(self, weights):
+      super(SoftCrossEntropyLoss, self).__init__()
+      self.weights = weights
+
+   def forward(self, x, y):
+      p = F.log_softmax(x, dim=-1)
+      w_labels = self.weights*y
+      loss = -(w_labels*p).sum() / (w_labels).sum()
+      return loss"""
+
 
 def get_args_parser():
     parser = argparse.ArgumentParser('Next-ViT training and evaluation script', add_help=False)
@@ -272,11 +293,14 @@ def main(args):
 
     if args.mixup > 0.:
         # smoothing is handled with mixup label transform
+        print("criterion:SoftTargetCrossEntropy()")
         criterion = SoftTargetCrossEntropy()
-    elif args.smoothing:
+    elif args.smoothing > 0:
+        print("criterion:LabelSmoothingCrossEntropy(smoothing=args.smoothing)")
         criterion = LabelSmoothingCrossEntropy(smoothing=args.smoothing)
     else:
         criterion = torch.nn.CrossEntropyLoss(torch.tensor([1.0, 10.0], device='cuda'))
+        print("criterion: torch.nn.CrossEntropyLoss(torch.tensor([1.0, 10.0], device='cuda'))")
 
     criterion = DistillationLoss(
         criterion, None, 'none', 0, 0
