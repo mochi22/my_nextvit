@@ -342,10 +342,10 @@ def main(args):
         model_without_ddp.proj_head[0].out_features = num_classes
 
         # 全結合層の重み行列のサイズを修正する
-        old_weights = model_without_ddp.proj_head.weight.data  # 旧重みを保存する
+        old_weights = model_without_ddp.proj_head[0].weight.data  # 旧重みを保存する
         new_weights = torch.nn.Parameter(torch.zeros(num_classes, 1024))
         new_weights.data[:old_weights.shape[0], :] = old_weights
-        model_without_ddp.proj_head.weight = new_weights  # 新しい重みをセットする
+        model_without_ddp.proj_head[0].weight = new_weights  # 新しい重みをセットする
 
         print(model.module.proj_head)
         print(model_without_ddp.proj_head)
