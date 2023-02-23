@@ -30,8 +30,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
 
     for samples, targets in metric_logger.log_every(data_loader, print_freq, header):
         #print("maybe samples:input images")
-        print("targets:",targets)
-        targets = targets.squeeze_()
+        targets = targets.to(device)
         print("targets:",targets)  #maybe input img class
         samples = samples.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)
@@ -43,6 +42,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
             outputs = model(samples)
             print("outputs:", outputs)  #maybe prediction input img class 
             print(outputs.size())
+            outputs = outputs.to(device)
+            print("outputs:", outputs)
             loss = criterion(samples, outputs, targets)
 
         loss_value = loss.item()
