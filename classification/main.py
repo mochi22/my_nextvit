@@ -346,7 +346,7 @@ def main(args):
         print(old_weights)
         print(old_weights.size())
         #new_weights = torch.nn.Parameter(torch.zeros(num_classes, 1024).to(device))
-        new_weights = old_weights.unsqueeze(0).repeat(num_classes, 1)  # 2次元テンソルに変換してからrepeatする
+        new_weights = old_weights.unsqueeze(0).repeat(num_classes, 1, 1)  # 3次元テンソルに変換してからrepeatする
         print(new_weights.size())
         model_without_ddp.proj_head[0].weight = new_weights  # 新しい重みをセットする
 
