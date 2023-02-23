@@ -338,21 +338,22 @@ def main(args):
     if args.finetune:
         print("This is finetuning!!!!!!!")
 
-        # 最後の層以外の層を取得する
-        model_without_ddp = torch.nn.Sequential(*list(model.module.children())[:-1])
-
-        # 新しい層を追加して、出力サイズを変更する
-        out_featurs = 2 # 新しい出力サイズ
-        model_without_ddp.add_module('fc', torch.nn.Linear(1024, out_featurs))
+        model.proj_head = torch.nn.Sequential(
+            torch.nn.Linear(in_features=1024, out_features=2, bias=True)
+        )
 
         # 以前の層の重みを凍結する
-        for param in model_without_ddp.parameters():
-            param.requires_grad = False
+        param_names = ['proj_head.0.weight', 'proj_head.0.bias']
+        for name, param in model.named_parameters():
+            if name in param_names:
+                print("@@@@@")
+                param.requires_grad = True
+                print(name, param)
+            else:
+                param.requires_grad = False
 
-        model_without_ddp = model_without_ddp.to(device)
-        optimizer = create_optimizer(args, model_without_ddp)
+        optimizer = create_optimizer(args, model)
         lr_scheduler, _ = create_scheduler(args, optimizer)
-
 
         summary(model,(3,224,224)) # summary(model,(channels,H,W))
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)
