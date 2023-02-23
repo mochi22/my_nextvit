@@ -339,6 +339,7 @@ def main(args):
         print("This is finetuning!!!!!!!")
         model.module.proj_head[0].out_features = 2
         model_without_ddp.proj_head[0].out_features = 2
+        model = model.to(device)
         print(model.module.proj_head)
         print(model_without_ddp.proj_head)
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)
