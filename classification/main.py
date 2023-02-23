@@ -21,6 +21,8 @@ from samplers import RASampler
 import utils
 import nextvit
 
+from torchsummary import summary
+
 """class SoftTargetCrossEntropy(nn.Module):
 
     def __init__(self):
@@ -340,6 +342,7 @@ def main(args):
         print(model_without_ddp)
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)
         print("ex output:",model(input_tensor).size())
+        summary(model,(3,224,224)) # summary(model,(channels,H,W))
         update_param_names = ["proj_head.0.weight", "proj_head.0.bias"]
         #params_to_update = []
         for name, param in model.named_parameters():
