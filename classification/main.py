@@ -254,10 +254,6 @@ def main(args):
 
     mixup_fn = None
     mixup_active = args.mixup > 0 or args.cutmix > 0. or args.cutmix_minmax is not None
-
-    args.nb_classes=2
-
-
     if mixup_active:
         mixup_fn = Mixup(
             mixup_alpha=args.mixup, cutmix_alpha=args.cutmix, cutmix_minmax=args.cutmix_minmax,
@@ -341,7 +337,6 @@ def main(args):
     
     if args.finetune:
         print("This is finetuning!!!!!!!")
-        print(optimizer)
         model.module.proj_head[0].out_features = 2
         model_without_ddp.proj_head[0].out_features = 2
         model = model.to(device)
