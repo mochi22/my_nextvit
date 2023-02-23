@@ -351,9 +351,12 @@ def main(args):
 
         print(model.module.proj_head)
         print(model_without_ddp.proj_head)
+
+        print(old_weights.repeat(num_classes, 1))
+        summary(model,(3,224,224)) # summary(model,(channels,H,W))
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)
         print("ex output:",model(input_tensor).size())
-        summary(model,(3,224,224)) # summary(model,(channels,H,W))
+        
         update_param_names = ["proj_head.0.weight", "proj_head.0.bias"]
         #params_to_update = []
         for name, param in model.named_parameters():
