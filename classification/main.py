@@ -338,13 +338,13 @@ def main(args):
     if args.finetune:
         print("This is finetuning!!!!!!!")
 
-        model.proj_head = torch.nn.Sequential(
+        model_without_ddp.proj_head = torch.nn.Sequential(
             torch.nn.Linear(in_features=1024, out_features=2, bias=True)
         )
 
         # 以前の層の重みを凍結する
         param_names = ['proj_head.0.weight', 'proj_head.0.bias']
-        for name, param in model.named_parameters():
+        for name, param in model_without_ddp.named_parameters():
             if name in param_names:
                 print("@@@@@")
                 param.requires_grad = True
@@ -352,16 +352,16 @@ def main(args):
             else:
                 param.requires_grad = False
 
-        optimizer = create_optimizer(args, model)
+        optimizer = create_optimizer(args, model_without_ddp)
         lr_scheduler, _ = create_scheduler(args, optimizer)
 
-        summary(model,(3,224,224)) # summary(model,(channels,H,W))
+        summary(model_without_ddp,(3,224,224)) # summary(model_without_ddp,(channels,H,W))
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32)
-        print("ex output:",model(input_tensor).size())
+        print("ex output:",model_without_ddp(input_tensor).size())
         
         update_param_names = ["proj_head.0.weight", "proj_head.0.bias"]
         #params_to_update = []
-        for name, param in model.named_parameters():
+        for name, param in model_without_ddp.named_parameters():
             if name in update_param_names:
                 print("@@@@@@@@@@")
                 print(name)
