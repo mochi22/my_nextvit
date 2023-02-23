@@ -336,7 +336,7 @@ def main(args):
     if args.finetune:
         print(model)
         print("This is finetuning!!!!!!!")
-        model.proj_head[0].out_features = 2
+        model.module.proj_head[0].out_features = 2
         print(model)
 
         update_param_names = ["proj_head.0.weight", "proj_head.0.bias"]
