@@ -272,7 +272,7 @@ def main(args):
         model.eval()
         utils.cal_flops_params_with_fvcore(model, input_tensor)
 
-    model.to(device)
+    #model.to(device)
     model_ema = None
 
 
