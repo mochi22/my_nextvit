@@ -33,6 +33,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
         targets = targets.to(device)
         targets = targets.to(torch.int64)
         print("targets:",targets)  #maybe input img class
+        print(targets.dtype, targets.size())
         samples = samples.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)
 
@@ -46,6 +47,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
             outputs = outputs.to(device)
             outputs = outputs.to(torch.float32)
             print("outputs:", outputs)
+            print(outputs.dtype)
             loss = criterion(samples, outputs, targets)
 
         loss_value = loss.item()
