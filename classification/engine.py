@@ -65,7 +65,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
 
 @torch.no_grad()
 def evaluate(data_loader, model, device):
-    criterion = torch.nn.CrossEntropyLoss()
+    criterion = torch.nn.CrossEntropyLoss(torch.tensor([1.0, 10.0], device='cuda'))
 
     metric_logger = utils.MetricLogger(delimiter="  ")
     header = 'Test:'

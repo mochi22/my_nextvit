@@ -3,6 +3,7 @@ import datetime
 import numpy as np
 import time
 import torch
+import torch.nn
 import torch.backends.cudnn as cudnn
 import json
 
@@ -275,7 +276,7 @@ def main(args):
     elif args.smoothing:
         criterion = LabelSmoothingCrossEntropy(smoothing=args.smoothing)
     else:
-        criterion = torch.nn.CrossEntropyLoss()
+        criterion = torch.nn.CrossEntropyLoss(torch.tensor([1.0, 10.0], device='cuda'))
 
     criterion = DistillationLoss(
         criterion, None, 'none', 0, 0
@@ -307,6 +308,19 @@ def main(args):
                     args.start_epoch = checkpoint['epoch'] + 1
                 if 'scaler' in checkpoint:
                     loss_scaler.load_state_dict(checkpoint['scaler'])
+    
+    if args.finetune:
+        model.proj_head = nn.Sequential(
+            nn.Linear(in_features=1024, out_features=2, bias=True)
+        )
+
+        update_param_names = ["proj_head.0.weight", "proj_head.0.bias"]
+        #params_to_update = []
+        for name, param in model.named_parameters():
+            if name in update_param_names:
+                param.requires_grad = True
+            else:
+                param.requires_grad = False
 
     if args.eval:
         if hasattr(model.module, "merge_bn"):
