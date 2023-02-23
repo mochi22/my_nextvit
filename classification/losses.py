@@ -35,9 +35,9 @@ class DistillationLoss(torch.nn.Module):
         if not isinstance(outputs, torch.Tensor):
             # assume that the model outputs a tuple of [outputs, outputs_kd]
             outputs, outputs_kd = outputs
-        print("[[[[[[[[[[[[[]]]]]]]]]]]]]")
+
         base_loss = self.base_criterion(outputs, labels)
-        print("*************")
+
         if self.distillation_type == 'none':
             return base_loss
 
