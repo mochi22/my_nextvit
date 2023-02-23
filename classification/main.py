@@ -334,6 +334,7 @@ def main(args):
                     loss_scaler.load_state_dict(checkpoint['scaler'])
     
     if args.finetune:
+        print(model)
         print("This is finetuning!!!!!!!")
         model.proj_head[0].out_features = 2
         print(model)
