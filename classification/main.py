@@ -322,6 +322,7 @@ def main(args):
                 args.resume, map_location='cpu', check_hash=True)
         else:
             checkpoint = torch.load(args.resume, map_location='cpu')
+            print("checkpoint:", checkpoint)
         if 'model' in checkpoint:
             model_without_ddp.load_state_dict(checkpoint['model'])
         else:
