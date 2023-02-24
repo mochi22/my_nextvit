@@ -33,8 +33,6 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
         print("targets:", targets)
         targets = targets.to(device)
         targets = targets.to(torch.int64)
-        print("targets:",targets)  #maybe input img class
-        print(targets.dtype, targets.size())
         samples = samples.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)
 
@@ -42,6 +40,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
             samples, targets = mixup_fn(samples, targets)
 
         with torch.cuda.amp.autocast():
+            print("targets:",targets)  #maybe input img class
+            print(targets.dtype, targets.size())
             outputs = model(samples)
             print("outputs:", outputs)  #maybe prediction input img class 
             print(outputs.size())
