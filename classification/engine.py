@@ -38,6 +38,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
 
         if mixup_fn is not None:
             samples, targets = mixup_fn(samples, targets)
+            print("samples", samples.size())
 
         with torch.cuda.amp.autocast():
             print("targets:",targets)  #maybe input img class
