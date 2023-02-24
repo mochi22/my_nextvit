@@ -26,11 +26,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
     metric_logger.add_meter('lr', utils.SmoothedValue(window_size=1, fmt='{value:.6f}'))
     header = 'Epoch: [{}]'.format(epoch)
     print_freq = 10
-    print(model.module.proj_head)
 
     for samples, targets in metric_logger.log_every(data_loader, print_freq, header):
-        #print("maybe samples:input images")
-        print("targets:", targets)
         targets = targets.to(device)
         targets = targets.to(torch.int64)
         samples = samples.to(device, non_blocking=True)
@@ -38,18 +35,11 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
 
         if mixup_fn is not None:
             samples, targets = mixup_fn(samples, targets)
-            print("samples", samples.size())
 
         with torch.cuda.amp.autocast():
-            print("targets:",targets)  #maybe input img class
-            print(targets.dtype, targets.size())
             outputs = model(samples)
-            print("outputs:", outputs)  #maybe prediction input img class 
-            print(outputs.size())
             outputs = outputs.to(device)
             outputs = outputs.to(torch.float32)
-            print("outputs:", outputs)
-            print(outputs.dtype)
             loss = criterion(samples, outputs, targets)
 
         loss_value = loss.item()

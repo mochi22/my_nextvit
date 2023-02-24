@@ -361,15 +361,6 @@ def main(args):
         input_tensor = torch.zeros((1, 3, 224, 224), dtype=torch.float32, device='cuda')
         print("ex output:",model_without_ddp(input_tensor).size())
         
-        update_param_names = ["proj_head.0.weight", "proj_head.0.bias"]
-        #params_to_update = []
-        for name, param in model_without_ddp.named_parameters():
-            if name in update_param_names:
-                print("@@@@@@@@@@")
-                print(name)
-                param.requires_grad = True
-            else:
-                param.requires_grad = False
 
     if args.eval:
         if hasattr(model.module, "merge_bn"):
