@@ -36,13 +36,7 @@ class DistillationLoss(torch.nn.Module):
             # assume that the model outputs a tuple of [outputs, outputs_kd]
             outputs, outputs_kd = outputs
 
-
-        print("labels:",labels)  #maybe input img class
-        print(labels.dtype, labels.size())
-        print("outputs:", outputs)
-        print(outputs.dtype, outputs.size())
         base_loss = self.base_criterion(outputs, labels)
-        print("base_los::", base_loss)
 
         if self.distillation_type == 'none':
             return base_loss
