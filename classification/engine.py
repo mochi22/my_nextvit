@@ -33,6 +33,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
         targets = targets.to(torch.int64)
         samples = samples.to(device, non_blocking=True)
         targets = targets.to(device, non_blocking=True)
+        print(targets)
 
         if mixup_fn is not None:
             samples, targets = mixup_fn(samples, targets)
@@ -41,7 +42,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: DistillationLoss,
             outputs = model(samples)
             outputs = outputs.to(device)
             outputs = outputs.to(torch.float32)
-            outputs = my_softmax(outputs)
+            print(outputs)
+            #outputs = my_softmax(outputs)
             loss = criterion(samples, outputs, targets)
 
         loss_value = loss.item()
