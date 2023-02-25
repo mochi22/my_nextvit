@@ -296,10 +296,12 @@ def main(args):
     if args.mixup > 0.:
         # smoothing is handled with mixup label transform
         print("criterion:SoftTargetCrossEntropy()")
-        criterion = SoftTargetCrossEntropy()
+        #criterion = SoftTargetCrossEntropy()
+        criterion = torch.nn.CrossEntropyLoss(torch.tensor([1.0, 10.0], device='cuda'))
     elif args.smoothing > 0:
         print("criterion:LabelSmoothingCrossEntropy(smoothing=args.smoothing)")
-        criterion = LabelSmoothingCrossEntropy(smoothing=args.smoothing)
+        #criterion = LabelSmoothingCrossEntropy(smoothing=args.smoothing)
+        criterion = torch.nn.CrossEntropyLoss(torch.tensor([1.0, 10.0], device='cuda'))
     else:
         criterion = torch.nn.CrossEntropyLoss(torch.tensor([1.0, 10.0], device='cuda'))
         print("criterion: torch.nn.CrossEntropyLoss(torch.tensor([1.0, 10.0], device='cuda'))")
@@ -339,7 +341,7 @@ def main(args):
         print("This is finetuning!!!!!!!")
         
         model_without_ddp.proj_head = torch.nn.Sequential(
-            torch.nn.Linear(in_features=1024, out_features=1, bias=True)
+            torch.nn.Linear(in_features=1024, out_features=2, bias=True)
         )
 
         model_without_ddp = model_without_ddp.to(device)
