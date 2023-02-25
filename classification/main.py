@@ -339,12 +339,13 @@ def main(args):
         print("This is finetuning!!!!!!!")
         
         model_without_ddp.proj_head = torch.nn.Sequential(
-            torch.nn.Linear(in_features=1024, out_features=2, bias=True)
+            torch.nn.Linear(in_features=1024, out_features=1, bias=True)
         )
 
         model_without_ddp = model_without_ddp.to(device)
         
-        # 以前の層の重みを凍結する
+        # 以前の層の重みを凍結する(入力サイズを変更したいから凍結しない)
+        """
         param_names = ['proj_head.0.weight', 'proj_head.0.bias']
         for name, param in model_without_ddp.named_parameters():
             if name in param_names:
@@ -353,6 +354,7 @@ def main(args):
                 print(name, param)
             else:
                 param.requires_grad = False
+        """
 
         optimizer = create_optimizer(args, model_without_ddp)
         lr_scheduler, _ = create_scheduler(args, optimizer)
